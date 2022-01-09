@@ -2,6 +2,7 @@
 
 namespace Amayamedia\JiraRestClient;
 
+use Amayamedia\JiraRestClient\Auth\AuthService;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -29,23 +30,28 @@ class JiraRestClient
         $this->apiUri = $uri;
     }
 
-    protected function get(string $uri)
+    public function useAuth(AuthService $authService)
+    {
+        $this->http = $authService->http;
+    }
+
+    protected function get(string $uri, $data = [])
     {
         return $this->http->get($uri);
     }
-    protected function post($uri, $data)
+    protected function post(string $uri, $data = [])
     {
         return $this->http->post($uri, $data);
     }
-    protected function put($data)
+    protected function put(string $uri, $data = [])
     {
-        // @todo
+        return $this->http->put($uri, $data);
     }
-    protected function patch($data)
+    protected function patch(string $uri, $data = [])
     {
-        // @todo
+        return $this->http->patch($uri, $data);
     }
-    protected function delete($uri)
+    protected function delete(string $uri)
     {
         return $this->http->delete($uri);
     }
