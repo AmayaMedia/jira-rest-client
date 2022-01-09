@@ -15,14 +15,17 @@ class Worklog
     public string $id;
     public string $issueId;
 
+    /**
+     * Add values to properties on initializations
+     *
+     * @param array $params
+     */
     public function __construct(array $params = [])
     {
         if (!empty($params)) {
             foreach ($params as $key => $value) {
                 if (property_exists($this, $key)) {
                     $this->{$key} = $value;
-                } else {
-                    dd([$key => 'doesn\'t exist']);
                 }
             }
         }
@@ -38,6 +41,12 @@ class Worklog
         return array_filter(get_object_vars($this));
     }
 
+    /**
+     * Set Comment property
+     *
+     * @param string $comment
+     * @return Worklog
+     */
     public function setComment(string $comment): Worklog
     {
         $this->comment = $comment;
@@ -45,6 +54,12 @@ class Worklog
         return $this;
     }
 
+    /**
+     * Set time spent in string format, e.g. "3h 20m"
+     *
+     * @param string $timeSpent
+     * @return Worklog
+     */
     public function setTimeSpent(string $timeSpent): Worklog
     {
         $this->timeSpent = $timeSpent;
@@ -52,6 +67,12 @@ class Worklog
         return $this;
     }
 
+    /**
+     * Set time spent in seconds
+     *
+     * @param int $timeSpentSeconds
+     * @return Worklog
+     */
     public function setTimeSpentSeconds(int $timeSpentSeconds): Worklog
     {
         $this->timeSpentSeconds = $timeSpentSeconds;

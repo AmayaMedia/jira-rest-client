@@ -17,6 +17,11 @@ class AuthService extends JiraRestClient
         $this->setAPIUri('/rest/auth/1/session');
     }
 
+    /**
+     * Return the current user if logged in
+     *
+     * @return array|mixed
+     */
     public function currentUser()
     {
         // @todo: return cache user
@@ -25,7 +30,14 @@ class AuthService extends JiraRestClient
         return $response->json();
     }
 
-    public function login($username = null, $password = null)
+    /**
+     * Start a new user session
+     *
+     * @param null $username
+     * @param null $password
+     * @return AuthService
+     */
+    public function login($username = null, $password = null): AuthService
     {
         if (!$username) {
             $username = $this->jiraUser['name'];
@@ -53,6 +65,11 @@ class AuthService extends JiraRestClient
         return $this;
     }
 
+    /**
+     * Destroy the current user session
+     *
+     * @return void
+     */
     public function logout()
     {
         $this->delete($this->apiUri);

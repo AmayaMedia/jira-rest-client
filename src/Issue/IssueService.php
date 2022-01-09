@@ -7,8 +7,6 @@ use Amayamedia\JiraRestClient\JiraRestClient;
 
 class IssueService extends JiraRestClient
 {
-    private AuthService $authClient;
-
     public function __construct(string $baserUrl = '')
     {
         parent::__construct($baserUrl);
@@ -16,6 +14,8 @@ class IssueService extends JiraRestClient
     }
 
     /**
+     * Returns the issue with the provided issue key
+     *
      * @param string $issueKey
      * @param array $params
      * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
@@ -27,6 +27,11 @@ class IssueService extends JiraRestClient
         return $response->json();
     }
 
+    /**
+     * Get all worklogs for the provided issue key
+     * @param string $issueKey
+     * @return array|mixed
+     */
     public function getWorklog(string $issueKey)
     {
         // GET /rest/api/2/issue/{issueIdOrKey}/worklog
@@ -35,6 +40,12 @@ class IssueService extends JiraRestClient
         return $response->json();
     }
 
+    /**
+     * Get Worklog for the provided issue key and worklog id
+     * @param string $issueKey
+     * @param int $worklogId
+     * @return array|mixed
+     */
     public function getWorklogById(string $issueKey, int $worklogId)
     {
         // GET /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
@@ -43,7 +54,14 @@ class IssueService extends JiraRestClient
         return $response->json();
     }
 
-    public function addWorklog(string $issueKey, $worklog = [])
+    /**
+     * Add Worklog to for the provided issue key
+     *
+     * @param string $issueKey
+     * @param Worklog $worklog
+     * @return array|mixed
+     */
+    public function addWorklog(string $issueKey, Worklog $worklog)
     {
         // POST /rest/api/2/issue/{issueIdOrKey}/worklog
         $response = $this->post($this->apiUri . $issueKey . '/worklog/', $worklog);
@@ -51,7 +69,15 @@ class IssueService extends JiraRestClient
         return $response->json();
     }
 
-    public function updateWorklog(string $issueKey, int $worklogId, $worklog = [])
+    /**
+     * Update an existing Worklog for the provided issue key and worklog id
+     *
+     * @param string $issueKey
+     * @param int $worklogId
+     * @param Worklog $worklog
+     * @return array|mixed
+     */
+    public function updateWorklog(string $issueKey, int $worklogId, Worklog $worklog)
     {
         // PUT /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
         $response = $this->put($this->apiUri . $issueKey . '/worklog/' . $worklogId, $worklog);
@@ -59,6 +85,12 @@ class IssueService extends JiraRestClient
         return $response->json();
     }
 
+    /**
+     * Delete an worklog for the provided issue key and worklog id
+     * @param string $issueKey
+     * @param int $worklogId
+     * @return array|mixed
+     */
     public function deleteWorklog(string $issueKey, int $worklogId)
     {
         // DELETE /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
