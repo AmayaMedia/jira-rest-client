@@ -5,13 +5,13 @@ namespace Amayamedia\JiraRestClient\Auth;
 use Amayamedia\JiraRestClient\JiraRestClient;
 use GuzzleHttp\Cookie\CookieJar;
 
-class JiraAuthService extends JiraRestClient
+class AuthService extends JiraRestClient
 {
     private array $jiraUser = [];
 
     private CookieJar $cookies;
 
-    public function __construct(string $baseUrl)
+    public function __construct(string $baseUrl = '')
     {
         parent::__construct($baseUrl);
         $this->setAPIUri('/rest/auth/1/session');
@@ -50,6 +50,7 @@ class JiraAuthService extends JiraRestClient
         // @todo: save cookies?
 
         // @todo: Return session?
+        return $this;
     }
 
     public function logout()
