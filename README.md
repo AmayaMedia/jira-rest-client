@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/amayamedia/jira-rest-client.svg?style=flat-square)](https://packagist.org/packages/amayamedia/jira-rest-client)
 ![GitHub Actions](https://github.com/amayamedia/jira-rest-client/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+A high-level client for interacting with JIRA Server Rest API. Currently only supports Worklogs
 
 ## Installation
 
@@ -17,13 +17,18 @@ composer require amayamedia/jira-rest-client
 ## Usage
 
 ```php
-// Usage description here
-```
+$authClient = new AuthService('https://example.com/api/auth');
+$issueService = new IssueService();
+$issueService->useAuth($authClient);
 
-### Testing
+// Get Worklogs for an issue
+$issue = $issueService->getWorklog('TEST-1');
 
-```bash
-composer test
+// Add a Worklog to an Issue
+$issueService->addWorklog('TEST-1', [
+    'comment' => 'I did some work',
+    'timeSpentSeconds' => 12000
+]);
 ```
 
 ### Changelog
@@ -46,7 +51,3 @@ If you discover any security related issues, please email rene@amayamedia.com in
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).

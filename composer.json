@@ -51,5 +51,6 @@
                 "JiraRestClient": "Amayamedia\\JiraRestClient\\JiraRestClientFacade"
             }
         }
-    }
+    },
+    "version": "dev-0.1.0-rc1"
 }
