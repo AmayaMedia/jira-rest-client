@@ -1,4 +1,4 @@
-# Very short description of the package
+# A Simple API for interacting with JIRA
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/amayamedia/jira-rest-client.svg?style=flat-square)](https://packagist.org/packages/amayamedia/jira-rest-client)
 [![Total Downloads](https://img.shields.io/packagist/dt/amayamedia/jira-rest-client.svg?style=flat-square)](https://packagist.org/packages/amayamedia/jira-rest-client)
