@@ -18,7 +18,6 @@ class JiraRestClient
      */
     protected $apiUri = '/rest/2';
 
-    // @todo: Use JsonMapper for JIRA responses
     protected JsonMapper $jsonMapper;
 
     protected PendingRequest $http;
@@ -27,6 +26,7 @@ class JiraRestClient
     {
         $this->baseUrl = $baseUrl;
         $this->http = Http::baseUrl($this->baseUrl);
+        $this->jsonMapper = new JsonMapper();
     }
 
     /**

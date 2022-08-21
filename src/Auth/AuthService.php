@@ -37,7 +37,7 @@ class AuthService extends JiraRestClient
      * @param null $password
      * @return AuthService
      */
-    public function login($username = null, $password = null): AuthService
+    public function login($username = null, $password = null): AuthSession
     {
         if (!$username) {
             $username = $this->jiraUser['name'];
@@ -47,22 +47,13 @@ class AuthService extends JiraRestClient
             $password = $this->jiraUser['password'];
         }
 
-        // @todo: Make request
         $response = $this->post($this->apiUri, [
             'username' => $username,
             'password' => $password,
         ]);
 
-        // Save cookies?
-        $this->cookies = $response->cookies();
-        // $this->http->withCookies((array) $response->cookies(), $this->baseUrl);
-
-        // @todo: Map session
-
-        // @todo: save cookies?
-
-        // @todo: Return session?
-        return $this;
+        // Return user session
+        return $this->jsonMapper->map(json_decode(json_encode($response->json())), new AuthSession());
     }
 
     /**
