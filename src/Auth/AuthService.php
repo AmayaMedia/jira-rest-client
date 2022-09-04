@@ -4,6 +4,7 @@ namespace Amayamedia\JiraRestClient\Auth;
 
 use Amayamedia\JiraRestClient\JiraRestClient;
 use GuzzleHttp\Cookie\CookieJar;
+use Illuminate\Support\Facades\Http;
 
 class AuthService extends JiraRestClient
 {
@@ -24,9 +25,7 @@ class AuthService extends JiraRestClient
      */
     public function currentUser()
     {
-        // @todo: return cache user
-        $response = $this->get($this->apiUri);
-
+        $response = $this->http->get($this->apiUri);
         return $response->json();
     }
 
@@ -64,5 +63,25 @@ class AuthService extends JiraRestClient
     public function logout()
     {
         $this->delete($this->apiUri);
+    }
+
+    /**
+     * @param array $cookies
+     * @return $this
+     */
+    public function authorizeWithCookie(array $cookies)
+    {
+        $headers = [];
+        ['name' => $name, 'value' => $value] = $cookies;
+
+        // Set Cookie header
+        $headers['Cookie'] = "$name=$value;";
+
+        // Set Cookies as Headers because `::withCookies` is weird
+        $cookiedClient = Http::withHeaders($headers);
+        $cookiedClient->baseUrl($this->baseUrl);
+
+        $this->http = $cookiedClient;
+        return $this;
     }
 }

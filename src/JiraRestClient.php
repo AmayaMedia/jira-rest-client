@@ -40,12 +40,10 @@ class JiraRestClient
 
     /**
      * Use an existing HTTP Client
-     *
-     * @param AuthService $authService
      */
-    public function useAuth(AuthService $authService)
+    public function useAuth($http)
     {
-        $this->http = $authService->http;
+        $this->http = $http;
     }
 
     /**
@@ -55,9 +53,9 @@ class JiraRestClient
      * @param array $data
      * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
      */
-    protected function get(string $uri, $data = [])
+    protected function get(string $uri, $options = [])
     {
-        return $this->http->get($uri);
+        return $this->http->get($uri, $options);
     }
 
     /**
