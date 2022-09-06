@@ -15,4 +15,8 @@ class AuthSession extends ClassSerialize
      * @var LoginInfo
      */
     public LoginInfo $loginInfo;
+
+    public array $errorMessages;
+
+    public array $errors;
 }
