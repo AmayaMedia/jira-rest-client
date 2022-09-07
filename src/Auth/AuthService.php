@@ -72,10 +72,10 @@ class AuthService extends JiraRestClient
     public function authorizeWithCookie(array $cookies)
     {
         $headers = [];
-        ['name' => $name, 'value' => $value] = $cookies;
-
-        // Set Cookie header
-        $headers['Cookie'] = "$name=$value;";
+        foreach ($cookies as $name => $value) {
+            // Set Cookie header
+            $headers['Cookie'] = "$name=$value;";
+        }
 
         // Set Cookies as Headers because `::withCookies` is weird
         $cookiedClient = Http::withHeaders($headers);
