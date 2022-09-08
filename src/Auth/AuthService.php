@@ -62,7 +62,9 @@ class AuthService extends JiraRestClient
      */
     public function logout()
     {
-        $this->delete($this->apiUri);
+        $response = $this->http->delete($this->apiUri);
+
+        return $response->status() === 204 ? ['message' => 'Success'] : $response->json();
     }
 
     /**
