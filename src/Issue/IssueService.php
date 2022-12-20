@@ -37,7 +37,7 @@ class IssueService extends JiraRestClient
         // GET /rest/api/2/issue/{issueIdOrKey}/worklog
         $response = $this->get($this->apiUri . $issueKey . '/worklog/');
 
-        return $response->json();
+        return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 
     /**
@@ -51,7 +51,7 @@ class IssueService extends JiraRestClient
         // GET /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
         $response = $this->get($this->apiUri . $issueKey . '/worklog/' . $worklogId);
 
-        return $response->json();
+        return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 
     /**
@@ -64,9 +64,9 @@ class IssueService extends JiraRestClient
     public function addWorklog(string $issueKey, Worklog $worklog)
     {
         // POST /rest/api/2/issue/{issueIdOrKey}/worklog
-        $response = $this->post($this->apiUri . $issueKey . '/worklog/', $worklog);
+        $response = $this->post($this->apiUri . $issueKey . '/worklog/', $worklog->toArray());
 
-        return $response->json();
+        return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 
     /**
@@ -82,7 +82,7 @@ class IssueService extends JiraRestClient
         // PUT /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
         $response = $this->put($this->apiUri . $issueKey . '/worklog/' . $worklogId, $worklog);
 
-        return $response->json();
+        return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 
     /**
@@ -96,6 +96,6 @@ class IssueService extends JiraRestClient
         // DELETE /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
         $response = $this->delete($this->apiUri . $issueKey . '/worklog/' . $worklogId);
 
-        return $response->json();
+        return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 }
