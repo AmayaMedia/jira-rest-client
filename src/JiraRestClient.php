@@ -41,9 +41,14 @@ class JiraRestClient
     /**
      * Use an existing HTTP Client
      */
-    public function useAuth($http)
+    public function setClient($http)
     {
         $this->http = $http;
+    }
+
+    public function getClient()
+    {
+        return $this->http;
     }
 
     /**
