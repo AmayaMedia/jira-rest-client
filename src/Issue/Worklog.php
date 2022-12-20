@@ -42,6 +42,16 @@ class Worklog
     }
 
     /**
+     * @alias Alias for jsonSerialize
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->jsonSerialize();
+    }
+
+    /**
      * Set Comment property
      *
      * @param string $comment
