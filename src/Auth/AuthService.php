@@ -25,8 +25,7 @@ class AuthService extends JiraRestClient
      */
     public function currentUser()
     {
-        $response = $this->http->get($this->apiUri);
-        return $response->json();
+        return $this->http->get($this->apiUri);
     }
 
     /**
@@ -52,6 +51,7 @@ class AuthService extends JiraRestClient
         ]);
 
         // Return user session
+        // @TODO: handle errors
         return $this->jsonMapper->map(json_decode(json_encode($response->json())), new AuthSession());
     }
 
@@ -62,9 +62,9 @@ class AuthService extends JiraRestClient
      */
     public function logout()
     {
-        $response = $this->http->delete($this->apiUri);
+        return $this->http->delete($this->apiUri);
 
-        return $response->status() === 204 ? ['message' => 'Success'] : $response->json();
+        // return $response->status() === 204 ? ['message' => 'Success'] : $response->json();
     }
 
     /**

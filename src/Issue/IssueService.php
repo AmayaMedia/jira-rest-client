@@ -35,9 +35,9 @@ class IssueService extends JiraRestClient
     public function getWorklog(string $issueKey)
     {
         // GET /rest/api/2/issue/{issueIdOrKey}/worklog
-        $response = $this->get($this->apiUri . $issueKey . '/worklog/');
+        return $this->get($this->apiUri . $issueKey . '/worklog/');
 
-        return $response->ok() ? $response->json() : ['message' => $response->reason()];
+        // return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 
     /**
@@ -64,9 +64,15 @@ class IssueService extends JiraRestClient
     public function addWorklog(string $issueKey, Worklog $worklog)
     {
         // POST /rest/api/2/issue/{issueIdOrKey}/worklog
-        $response = $this->post($this->apiUri . $issueKey . '/worklog/', $worklog->toArray());
+        return $this->post($this->apiUri . $issueKey . '/worklog/', $worklog->toArray());
+        // $response = $this->post($this->apiUri . $issueKey . '/worklog/', $worklog->toArray());
 
-        return $response->ok() ? $response->json() : ['message' => $response->reason()];
+        // dd([
+        //     'url' => $this->apiUri . $issueKey . '/worklog/',
+        //     'data' => $worklog->toArray()
+        // ]);
+
+        // return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 
     /**
