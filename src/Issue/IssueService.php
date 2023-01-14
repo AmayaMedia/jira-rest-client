@@ -20,35 +20,33 @@ class IssueService extends JiraRestClient
      * @param array $params
      * @return \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
      */
-    public function getIssue(string $issueKey, $params = [])
+    public function getIssue(string $issueKey)
     {
-        $response = $this->get($this->apiUri . $issueKey);
-
-        return $response->json();
+        return $this->get($this->apiUri . $issueKey);
     }
 
     /**
      * Get all worklogs for the provided issue key
+     * GET /rest/api/2/issue/{issueIdOrKey}/worklog
+     *
      * @param string $issueKey
      * @return array|mixed
      */
-    public function getWorklog(string $issueKey)
+    public function getWorklogs(string $issueKey)
     {
-        // GET /rest/api/2/issue/{issueIdOrKey}/worklog
         return $this->get($this->apiUri . $issueKey . '/worklog/');
-
-        // return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 
     /**
      * Get Worklog for the provided issue key and worklog id
+     * GET /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
+     *
      * @param string $issueKey
      * @param int $worklogId
      * @return array|mixed
      */
     public function getWorklogById(string $issueKey, int $worklogId)
     {
-        // GET /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
         $response = $this->get($this->apiUri . $issueKey . '/worklog/' . $worklogId);
 
         return $response->ok() ? $response->json() : ['message' => $response->reason()];
@@ -56,6 +54,8 @@ class IssueService extends JiraRestClient
 
     /**
      * Add Worklog to for the provided issue key
+     * POST /rest/api/2/issue/{issueIdOrKey}/worklog
+     * POST /rest/tempo-timesheets/4/worklogs
      *
      * @param string $issueKey
      * @param Worklog $worklog
@@ -63,20 +63,21 @@ class IssueService extends JiraRestClient
      */
     public function addWorklog(string $issueKey, Worklog $worklog)
     {
-        // POST /rest/api/2/issue/{issueIdOrKey}/worklog
-        return $this->post($this->apiUri . $issueKey . '/worklog/', $worklog->toArray());
-        // $response = $this->post($this->apiUri . $issueKey . '/worklog/', $worklog->toArray());
+        // Let's attempt JIRA's default api endpoint
+        $response = $this->post($this->apiUri . $issueKey . '/worklog/', $worklog->toArray());
 
-        // dd([
-        //     'url' => $this->apiUri . $issueKey . '/worklog/',
-        //     'data' => $worklog->toArray()
-        // ]);
+        // Let's try Tempo's API in case JIRA's default failed
+        if ($response->status() === 500 || !$response->ok()) {
+            $response = $this->post('/rest/tempo-timesheets/4/worklogs', $worklog->toArray());
+        }
 
-        // return $response->ok() ? $response->json() : ['message' => $response->reason()];
+        return $response;
     }
 
     /**
      * Update an existing Worklog for the provided issue key and worklog id
+     * PUT /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
+     * PUT /rest/tempo-timesheets/4/worklogs/{id}
      *
      * @param string $issueKey
      * @param int $worklogId
@@ -85,23 +86,28 @@ class IssueService extends JiraRestClient
      */
     public function updateWorklog(string $issueKey, int $worklogId, Worklog $worklog)
     {
-        // PUT /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
-        $response = $this->put($this->apiUri . $issueKey . '/worklog/' . $worklogId, $worklog);
+        // Let's attempt JIRA's default api endpoint
+        $response = $this->put($this->apiUri . $issueKey . '/worklog/' . $worklogId, $worklog->toArray());
 
-        return $response->ok() ? $response->json() : ['message' => $response->reason()];
+        // Let's try Tempo's API in case JIRA's default failed
+        if ($response->status() === 500 || !$response->ok()) {
+            $response = $this->put('/rest/tempo-timesheets/4/worklogs/' . $worklogId, $worklog->toArray());
+        }
+
+        return $response;
     }
 
     /**
-     * Delete an worklog for the provided issue key and worklog id
+     * Delete a worklog for the provided issue key and worklog id
+     * DELETE /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
+     *
      * @param string $issueKey
      * @param int $worklogId
      * @return array|mixed
      */
     public function deleteWorklog(string $issueKey, int $worklogId)
     {
-        // DELETE /rest/api/2/issue/{issueIdOrKey}/worklog/{id}
-        $response = $this->delete($this->apiUri . $issueKey . '/worklog/' . $worklogId);
+        return $this->delete($this->apiUri . $issueKey . '/worklog/' . $worklogId);
 
-        return $response->ok() ? $response->json() : ['message' => $response->reason()];
     }
 }
