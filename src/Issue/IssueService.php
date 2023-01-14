@@ -47,9 +47,7 @@ class IssueService extends JiraRestClient
      */
     public function getWorklogById(string $issueKey, int $worklogId)
     {
-        $response = $this->get($this->apiUri . $issueKey . '/worklog/' . $worklogId);
-
-        return $response->ok() ? $response->json() : ['message' => $response->reason()];
+        return $this->get($this->apiUri . $issueKey . '/worklog/' . $worklogId);
     }
 
     /**
