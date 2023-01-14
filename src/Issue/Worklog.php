@@ -6,6 +6,7 @@ class Worklog
 {
     public string $self;
     public array $author;
+    public string $worker;
     public array $updateAuthor;
     public string $comment;
     public string $updated;
@@ -14,6 +15,7 @@ class Worklog
     public int $timeSpentSeconds;
     public string $id;
     public string $issueId;
+    public string $originTaskId;
 
     /**
      * Add values to properties on initializations
